@@ -1,0 +1,6 @@
+
+1) Router (gorilla/mux or gin-gonic) -> Controller
+2) Controller - Receive and validate request -> pass to Server
+3) Server - process request, handle business logic, CRUD Item -> Access to Domain
+4) Domain (Item)
+5) bd (ElasticSerch)
