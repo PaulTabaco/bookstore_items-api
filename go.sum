@@ -1,7 +1,11 @@
 github.com/PaulTabaco/bookstore_oauth v0.0.0-20221213140644-b465c0adf12c h1:MMECOIj0zu6nOwO9GJj58fteVgCdf5uU3gKKSupx1mM=
 github.com/PaulTabaco/bookstore_oauth v0.0.0-20221213140644-b465c0adf12c/go.mod h1:y1Ry/T+bsaaPKdUgrnNpqWUocUkJKcjR4gzE9LdvEww=
+github.com/PaulTabaco/bookstore_oauth v0.0.0-20221216155034-d5bcb1d6f7aa h1:WA6yRfdho0NPG/3OE0r2LbEQTgv/nMxQ+FMU66ZZ/Cw=
+github.com/PaulTabaco/bookstore_oauth v0.0.0-20221216155034-d5bcb1d6f7aa/go.mod h1:C/OqOPnGMwez2Va6c3MHCKe1BWOaNF6MN9vbs0AwuJE=
 github.com/PaulTabaco/bookstore_utils v0.0.0-20221212224443-19484854a26a h1:B2ZUQ63Vodw1uMODOEL5KlVN75o8HSkK9VJYgI/whBw=
 github.com/PaulTabaco/bookstore_utils v0.0.0-20221212224443-19484854a26a/go.mod h1:b2zJtDL3fyx8bvDoSp134dRiIsrfMSUOWNezuukw0ZE=
+github.com/PaulTabaco/bookstore_utils v0.0.0-20221216140554-1772c03f800c h1:5N/hVjX1v8s3cRHEULWxelMskQq8G/+ysn1b6qgCS94=
+github.com/PaulTabaco/bookstore_utils v0.0.0-20221216140554-1772c03f800c/go.mod h1:b2zJtDL3fyx8bvDoSp134dRiIsrfMSUOWNezuukw0ZE=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/mercadolibre/golang-restclient v0.0.0-20170701022150-51958130a0a0 h1:EDOjA2IGgjSBlPlnW7CzBUo/o410SMiFh670jP29Kc4=
