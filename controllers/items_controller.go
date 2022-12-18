@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/PaulTabaco/bookstore_items-api/domain/items"
@@ -29,7 +29,7 @@ func (c *itemsController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	requestBody, err := ioutil.ReadAll(r.Body)
+	requestBody, err := io.ReadAll(r.Body)
 
 	if err != nil {
 		http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid reques body"))
