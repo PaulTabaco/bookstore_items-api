@@ -8,7 +8,15 @@ require (
 	github.com/gorilla/mux v1.8.0
 )
 
-require github.com/mercadolibre/golang-restclient v0.0.0-20170701022150-51958130a0a0 // indirect
+require (
+	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
+	github.com/elastic/go-elasticsearch v0.0.0 // indirect
+	github.com/elastic/go-elasticsearch/v8 v8.5.0 // indirect
+	github.com/mercadolibre/golang-restclient v0.0.0-20170701022150-51958130a0a0 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.24.0 // indirect
+)
 
 // replace (
 // 	github.com/PaulTabaco/bookstore_oauth => ../bookstore_oauth

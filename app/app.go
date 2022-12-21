@@ -1,9 +1,11 @@
 package app
 
 import (
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/PaulTabaco/bookstore_items-api/clients/elasticsearch"
 	"github.com/gorilla/mux"
 )
 
@@ -12,6 +14,8 @@ var (
 )
 
 func StartApp() {
+	elasticsearch.Init()
+
 	mapUrls()
 
 	srv := &http.Server{
@@ -27,5 +31,5 @@ func StartApp() {
 		panic(err)
 	}
 
-	// log.Fatal(srv.ListenAndServe())
+	log.Fatal(srv.ListenAndServe())
 }
