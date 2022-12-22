@@ -5,13 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
 	// "github.com/elastic/go-elasticsearch/v8"
 
-	"github.com/PaulTabaco/bookstore_items-api/logger"
+	"github.com/PaulTabaco/bookstore_utils/logger"
 	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/elastic/go-elasticsearch/v8"
 )
@@ -48,9 +47,10 @@ type esClient struct {
 }
 
 func Init() {
+	// log := logger.GetLogger()
 	es, err := elasticsearch.NewClient(cfg)
 	if err != nil {
-		log.Fatalf("Error creating the client: %s", err)
+		panic(err)
 	}
 
 	Client.setClient(es)
@@ -68,7 +68,7 @@ func (c *esClient) Index(index string, doc interface{}) (*esapi.Response, error)
 	// data, err := json.Marshal(struct{ Title string }{Title: "title"})
 	data, err := json.Marshal(doc)
 	if err != nil {
-		log.Fatalf("Error marshaling document: %s", err)
+
 		logger.Error("error marshaling document", err)
 		return nil, err
 	}
@@ -82,7 +82,6 @@ func (c *esClient) Index(index string, doc interface{}) (*esapi.Response, error)
 
 	res, err := req.Do(context.Background(), c.client)
 	if err != nil {
-		// log.Fatalf("Error getting response: %s", err)
 		logger.Error(fmt.Sprintf("error when trying to index document in index %s", index), err)
 		return nil, err
 	}

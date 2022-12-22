@@ -18,7 +18,7 @@ require (
 	go.uber.org/zap v1.24.0 // indirect
 )
 
-// replace (
-// 	github.com/PaulTabaco/bookstore_oauth => ../bookstore_oauth
-// 	github.com/PaulTabaco/bookstore_utils => ../bookstore_utils // otherwise from $GOPATH - ../../../../pkg/mod/github.com/!paul!tabaco/bookstore_utils@v0.0.0-20221212224443-19484854a26a
-// )
+replace (
+	// github.com/PaulTabaco/bookstore_oauth => ../bookstore_oauth
+	github.com/PaulTabaco/bookstore_utils => ../bookstore_utils // otherwise from $GOPATH - ../../../../pkg/mod/github.com/!paul!tabaco/bookstore_utils@v0.0.0-20221212224443-19484854a26a
+)
