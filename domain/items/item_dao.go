@@ -19,9 +19,8 @@ func (i *Item) Save() rest_errors.RestErr {
 	if err != nil {
 		return rest_errors.NewInternalServerError("error when trying to save item", errors.New("database error"))
 	}
-	// TODO:- change logic to evoid Second check for error
+
 	if result.IsError() {
-		logger.GetLogger().Printf("[%s] Error indexing document ID=%d", result.Status(), 1)
 		return rest_errors.NewInternalServerError("error when trying to save item", errors.New("database error"))
 	}
 
@@ -32,12 +31,8 @@ func (i *Item) Save() rest_errors.RestErr {
 		return rest_errors.NewInternalServerError("error when trying decode index response to item", errors.New(" error"))
 	}
 
-	// Print the response status and indexed document version.
-	logger.GetLogger().Printf("[%s] %s; version=%d", result.Status(), r["result"], int(r["_version"].(float64)))
-
-	// TODO: - Check it
 	id := fmt.Sprintf("%s", r["_id"])
-	if id != "" {
+	if id == "" {
 		return rest_errors.NewInternalServerError("error when trying get id from response item", errors.New(" error"))
 	}
 

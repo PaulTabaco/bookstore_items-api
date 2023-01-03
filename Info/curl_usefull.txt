@@ -1,2 +1,13 @@
 
 curl -v localhost:8000/ping
+
+// === Create new item
+curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"title": "this is the title", "description": {"plain_text": "text description"}, "status": "pending", "available_quantity": 10}' \
+http://localhost:8000/items?access_token=abc123
+
+
+///==== 9200
+// === Check new "items" index; With GET
+curl -k -v -H 'Content-type: application/json' -H "Accept: application/json" http://localhost:9200/items | json_pp
+curl -k -v -H 'Content-type: application/json' -H "Accept: application/json" http://localhost:9200/items/_search | json_pp
