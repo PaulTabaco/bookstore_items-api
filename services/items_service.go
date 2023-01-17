@@ -1,8 +1,6 @@
 package services
 
 import (
-	"net/http"
-
 	"github.com/PaulTabaco/bookstore_items-api/domain/items"
 	"github.com/PaulTabaco/bookstore_utils/rest_errors"
 )
@@ -27,6 +25,11 @@ func (s *itemsService) Create(item items.Item) (*items.Item, rest_errors.RestErr
 	return &item, nil
 }
 
-func (s *itemsService) Get(string) (*items.Item, rest_errors.RestErr) {
-	return nil, rest_errors.NewRestError("should be implemented", http.StatusNotImplemented, "not implemented", nil)
+func (s *itemsService) Get(id string) (*items.Item, rest_errors.RestErr) {
+	item := items.Item{Id: id}
+
+	if err := item.Get(); err != nil {
+		return nil, err
+	}
+	return &item, nil
 }

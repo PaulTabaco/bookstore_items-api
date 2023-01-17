@@ -40,6 +40,7 @@ var (
 type esClientInerface interface {
 	setClient(*esv8.Client)
 	Index(string, interface{}) (*esv8api.Response, error)
+	Get(string, string) (*esv8api.Response, error)
 }
 
 type esClient struct {
@@ -89,4 +90,17 @@ func (c *esClient) Index(index string, doc interface{}) (*esv8api.Response, erro
 	}
 
 	return res, nil
+}
+
+func (c *esClient) Get(index string, id string) (*esv8api.Response, error) {
+	resp, err := c.client.Get(index, id)
+	// fmt.Println(resp.String())
+
+	if err != nil {
+		logger.Error(fmt.Sprintf("error when trying to get document by id - %s", id), err)
+		return nil, err
+	}
+
+	return resp, nil
+
 }
