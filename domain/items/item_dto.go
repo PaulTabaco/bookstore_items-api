@@ -14,8 +14,8 @@ type Item struct {
 }
 
 type Description struct {
-	PlaineText string `json:"plaine_text"`
-	Html       string `json:"html"`
+	PlainText string `json:"plain_text"`
+	Html      string `json:"html"`
 }
 
 type Picture struct {
