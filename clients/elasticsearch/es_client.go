@@ -87,7 +87,6 @@ func (c *esClient) Index(index string, doc interface{}) (*esv8api.Response, erro
 		logger.Error(fmt.Sprintf("error when trying to index document in index %s", index), err)
 		return nil, err
 	}
-	defer res.Body.Close()
 
 	return res, nil
 }
