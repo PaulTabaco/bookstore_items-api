@@ -105,7 +105,6 @@ func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
 	/// Parsing respond to items
 	items := make([]Item, 0)
 	for _, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
-		// id := hit.(map[string]interface{})["_id"] -- can get id from up field of struct to put in item
 		source := hit.(map[string]interface{})["_source"]
 		bytes, _ := json.Marshal(source)
 
@@ -114,6 +113,8 @@ func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
 			return nil, rest_errors.NewInternalServerError("error when trying parse search response", errors.New("database error"))
 		}
 
+		id := hit.(map[string]interface{})["_id"] // -- can get id from up field of struct to put in item
+		item.Id = id.(string)
 		items = append(items, item)
 		// log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 	}
