@@ -41,7 +41,6 @@ type esClientInerface interface {
 	setClient(*esv8.Client)
 	Index(string, interface{}) (*esv8api.Response, error)
 	Get(string, string) (*esv8api.Response, error)
-	// Search(string, types.Query) (*esv8api.Response, error)
 	Search(string, bytes.Buffer) (*esv8api.Response, error)
 }
 
@@ -103,7 +102,6 @@ func (c *esClient) Get(index string, id string) (*esv8api.Response, error) {
 }
 
 func (c *esClient) Search(index string, queryBytes bytes.Buffer) (*esv8api.Response, error) {
-
 	resp, err := c.client.Search(
 		c.client.Search.WithContext(context.Background()),
 		c.client.Search.WithIndex(index),
@@ -119,32 +117,3 @@ func (c *esClient) Search(index string, queryBytes bytes.Buffer) (*esv8api.Respo
 	}
 	return resp, nil
 }
-
-// func (c *esClient) Search(index string, query types.Query) (*esv8api.Response, error) {
-// 	// data, err := json.Marshal(query)
-// 	// if err != nil {
-// 	// 	logger.Error("error marshaling document", err)
-// 	// 	return nil, err
-// 	// }
-
-// 	// q := elastic.NewMultiMatchQuery(term, "name", "abbreviation").Type("phrase_prefix")
-
-// 	resp, err := c.client.Search(
-// 		c.client.Search.WithContext(context.Background()),
-// 		c.client.Search.WithIndex(index),
-// 		c.client.Search.WithQuery(query.CombinedFields.Query),
-// 		c.client.Search.WithQuery()
-// 		// c.client.Search.WithBody(bytes.NewReader(data)),
-// 		// c.client.Search.WithTrackTotalHits(true),
-// 		c.client.Search.WithRestTotalHitsAsInt(true),
-// 		// c.client.Search.WithPretty(),
-// 	)
-// 	if err != nil {
-// 		logger.Error("error searching for documents", err)
-// 		return nil, err
-// 	}
-
-// 	fmt.Println(resp.String())
-// 	fmt.Println(err)
-// 	return resp, nil
-// }

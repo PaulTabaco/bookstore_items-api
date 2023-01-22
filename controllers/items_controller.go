@@ -77,23 +77,6 @@ func (c *itemsController) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
-
-	// data, err := json.Marshal(doc)
-	// if err != nil {
-	// 	logger.Error("error marshaling document", err)
-	// 	return nil, err
-	// }
-
-	// req := esv8api.IndexRequest{
-	// 	Index:   index,
-	// 	Body:    bytes.NewReader(data),
-	// 	Refresh: "true",
-	// }
-
-	//
-	// source := (r["_source"])
-	// bytes, _ := json.Marshal(source)
-
 	bytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		apiErr := rest_errors.NewBadRequestError("invalid json body @001")
