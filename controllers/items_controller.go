@@ -24,6 +24,7 @@ type itemsControllerInterface interface {
 	Create(w http.ResponseWriter, r *http.Request)
 	Get(w http.ResponseWriter, r *http.Request)
 	Search(w http.ResponseWriter, r *http.Request)
+	Delete(w http.ResponseWriter, r *http.Request)
 }
 
 type itemsController struct{}
@@ -99,4 +100,16 @@ func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http_utils.RespondJson(w, http.StatusOK, items)
+}
+
+func (c *itemsController) Delete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	itemId := strings.TrimSpace(vars["id"])
+	id, err := services.ItemsService.Delete(itemId)
+	if err != nil {
+		http_utils.RespondError(w, err)
+		return
+	}
+	message := "Item successfuly deleted, id " + *id
+	http_utils.RespondJson(w, http.StatusOK, message)
 }

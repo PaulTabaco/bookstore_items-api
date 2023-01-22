@@ -42,6 +42,7 @@ type esClientInerface interface {
 	Index(string, interface{}) (*esv8api.Response, error)
 	Get(string, string) (*esv8api.Response, error)
 	Search(string, bytes.Buffer) (*esv8api.Response, error)
+	Delete(string, string) (*esv8api.Response, error)
 }
 
 type esClient struct {
@@ -113,6 +114,16 @@ func (c *esClient) Search(index string, queryBytes bytes.Buffer) (*esv8api.Respo
 	)
 	if err != nil {
 		logger.Error("error searching for documents", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *esClient) Delete(index string, id string) (*esv8api.Response, error) {
+	resp, err := c.client.Delete(index, id)
+	fmt.Println(resp.String())
+	if err != nil {
+		logger.Error(fmt.Sprintf("error when trying to get document by id - %s", id), err)
 		return nil, err
 	}
 	return resp, nil
