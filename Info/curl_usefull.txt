@@ -6,6 +6,20 @@ curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' \
 -d '{"title": "this is the title", "description": {"plain_text": "text description"}, "status": "pending", "available_quantity": 10}' \
 http://localhost:8000/items?access_token=abc123
 
+// === Get item
+curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' http://localhost:8000/items/vs-lwIUBEleJcw1YryIW
+
+// === Search items
+curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"equals": [{"field": "seller", "value": 2}]}' \
+http://localhost:8000/items/search
+
+curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"equals": [{"field": "seller", "value": 2}, {"field": "available_quantity", "value": 10}]}' \
+http://localhost:8000/items/search
+
+
+
 
 ///==== 9200
 // === Check new "items" index; With GET
