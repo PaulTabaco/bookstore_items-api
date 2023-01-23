@@ -126,6 +126,36 @@ func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
 	return items, nil
 }
 
+func (i *Item) Update(request []byte) rest_errors.RestErr {
+	itemId := i.Id
+	result, err := elasticsearch.Client.Update(indexItems, itemId, request)
+	if err != nil {
+		return rest_errors.NewInternalServerError("error when trying to get item", errors.New("database error"))
+	}
+
+	if result.StatusCode == 404 {
+		return rest_errors.NewNotFoundError(fmt.Sprintf("no item fount with id: %s", i.Id))
+	}
+	if result.StatusCode == 400 {
+		return rest_errors.NewBadRequestError("invalid request body")
+	}
+
+	// Deserialize the response into a map.
+	var r map[string]interface{}
+	if err := json.NewDecoder(result.Body).Decode(&r); err != nil {
+		logger.GetLogger().Printf("Error parsing the response body: %s", err)
+		return rest_errors.NewInternalServerError("error when trying decode get response to item", errors.New(" error"))
+	}
+
+	if r["result"].(string) != "updated" {
+		return rest_errors.NewInternalServerError(fmt.Sprintf("error when trying to delete item with id - %s", itemId), errors.New("database error"))
+	}
+	// id from response to check
+	i.Id = r["_id"].(string)
+
+	return nil
+}
+
 func (i *Item) Delete() rest_errors.RestErr {
 	itemId := i.Id
 	result, err := elasticsearch.Client.Delete(indexItems, itemId)
@@ -147,7 +177,7 @@ func (i *Item) Delete() rest_errors.RestErr {
 	if r["result"].(string) != "deleted" {
 		return rest_errors.NewInternalServerError(fmt.Sprintf("error when trying to delete item with id - %s", itemId), errors.New("database error"))
 	}
-
+	// id from response to check
 	i.Id = r["_id"].(string)
 
 	return nil

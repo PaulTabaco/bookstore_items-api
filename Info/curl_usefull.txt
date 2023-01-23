@@ -19,7 +19,30 @@ curl -k -v -H 'Content-type: application/json' -H 'Accept: application/json' \
 http://localhost:8000/items/search
 
 
+// === Update item
+curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"title": "this is the updated title", "description": {"plain_text": "new text description"}, "status": "pending", "available_quantity": 99}' \
+http://localhost:8000/items/update/eeee
 
+
+curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"script": {"source": "ctx._source.title = params.title", "lang": "painless", "params": {"title" : "new text"}}}' \
+http://localhost:8000/items/update/uc92v4UBEleJcw1Y3CKg
+
+
+{
+    "script" :  {
+        "source": "ctx._source.title = params.title",
+        "lang": "painless",
+        "params" : {
+            "title" : "new text"
+        }
+    }
+}
+
+
+// === Delete item by id
+curl -k -v -X DELETE -H 'Content-type: application/json' -H 'Accept: application/json' http://localhost:8000/items/delete/abcd
 
 ///==== 9200
 // === Check new "items" index; With GET

@@ -24,6 +24,7 @@ type itemsControllerInterface interface {
 	Create(w http.ResponseWriter, r *http.Request)
 	Get(w http.ResponseWriter, r *http.Request)
 	Search(w http.ResponseWriter, r *http.Request)
+	Update(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
 }
 
@@ -100,6 +101,38 @@ func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http_utils.RespondJson(w, http.StatusOK, items)
+}
+
+func (c *itemsController) Update(w http.ResponseWriter, r *http.Request) {
+	// if err := oauth.AuthenticateRequest(r); err != nil {
+	// 	// http_utils.RespondError(w, err)
+	// 	return
+	// }
+
+	requestBody, err := io.ReadAll(r.Body)
+	if err != nil {
+		http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid request body"))
+		return
+	}
+	defer r.Body.Close()
+
+	vars := mux.Vars(r)
+	itemId := strings.TrimSpace(vars["id"])
+	// var request interface{}
+	// itemRequest.Id = itemId
+
+	// if err := json.Unmarshal(requestBody, &request); err != nil {
+	// 	http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid item json body"))
+	// 	return
+	// }
+
+	id, updateErr := services.ItemsService.Update(itemId, requestBody)
+	if updateErr != nil {
+		http_utils.RespondError(w, updateErr)
+		return
+	}
+	message := "Item successfuly updated, id " + *id
+	http_utils.RespondJson(w, http.StatusCreated, message)
 }
 
 func (c *itemsController) Delete(w http.ResponseWriter, r *http.Request) {
