@@ -43,6 +43,7 @@ type esClientInerface interface {
 	Get(string, string) (*esv8api.Response, error)
 	Search(string, bytes.Buffer) (*esv8api.Response, error)
 	Update(string, string, []byte) (*esv8api.Response, error)
+	UpdateV2(string, string, interface{}) (*esv8api.Response, error)
 	Delete(string, string) (*esv8api.Response, error)
 }
 
@@ -121,16 +122,31 @@ func (c *esClient) Search(index string, queryBytes bytes.Buffer) (*esv8api.Respo
 }
 
 func (c *esClient) Update(index string, id string, request []byte) (*esv8api.Response, error) {
-	// data, err := json.Marshal(request)
-	// if err != nil {
-	// 	logger.Error("error marshaling document", err)
-	// 	return nil, err
-	// }
-
 	req := esv8api.UpdateRequest{
 		Index:      index,
 		DocumentID: id,
 		Body:       bytes.NewReader(request),
+	}
+	res, err := req.Do(context.Background(), c.client)
+	fmt.Println(res.String())
+	if err != nil {
+		logger.Error(fmt.Sprintf("error when trying to update document with index %s", index), err)
+		return nil, err
+	}
+	return res, nil
+}
+
+func (c *esClient) UpdateV2(index string, id string, request interface{}) (*esv8api.Response, error) {
+	data, err := json.Marshal(request)
+	if err != nil {
+		logger.Error("error marshaling document", err)
+		return nil, err
+	}
+
+	req := esv8api.UpdateRequest{
+		Index:      index,
+		DocumentID: id,
+		Body:       bytes.NewReader(data),
 	}
 	res, err := req.Do(context.Background(), c.client)
 	fmt.Println(res.String())

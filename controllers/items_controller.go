@@ -25,6 +25,7 @@ type itemsControllerInterface interface {
 	Get(w http.ResponseWriter, r *http.Request)
 	Search(w http.ResponseWriter, r *http.Request)
 	Update(w http.ResponseWriter, r *http.Request)
+	UpdateV2(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
 }
 
@@ -79,6 +80,9 @@ func (c *itemsController) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
+	// TODO:- Authenticate; same as at create
+
+	// Read request body
 	bytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		apiErr := rest_errors.NewBadRequestError("invalid json body @001")
@@ -87,6 +91,7 @@ func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
+	// Unmarshal body to EsQuery struct
 	var query queries.EsQuery
 	if err := json.Unmarshal(bytes, &query); err != nil {
 		apiErr := rest_errors.NewBadRequestError("invalid json body @@002")
@@ -104,11 +109,9 @@ func (c *itemsController) Search(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemsController) Update(w http.ResponseWriter, r *http.Request) {
-	// if err := oauth.AuthenticateRequest(r); err != nil {
-	// 	// http_utils.RespondError(w, err)
-	// 	return
-	// }
+	// TODO:- Authenticate; same as at create
 
+	// Read request body
 	requestBody, err := io.ReadAll(r.Body)
 	if err != nil {
 		http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid request body"))
@@ -118,13 +121,6 @@ func (c *itemsController) Update(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	itemId := strings.TrimSpace(vars["id"])
-	// var request interface{}
-	// itemRequest.Id = itemId
-
-	// if err := json.Unmarshal(requestBody, &request); err != nil {
-	// 	http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid item json body"))
-	// 	return
-	// }
 
 	id, updateErr := services.ItemsService.Update(itemId, requestBody)
 	if updateErr != nil {
@@ -135,7 +131,39 @@ func (c *itemsController) Update(w http.ResponseWriter, r *http.Request) {
 	http_utils.RespondJson(w, http.StatusCreated, message)
 }
 
+func (c *itemsController) UpdateV2(w http.ResponseWriter, r *http.Request) {
+	// TODO:- Authenticate; same as at create
+
+	// Read request body
+	requestBody, err := io.ReadAll(r.Body)
+	if err != nil {
+		http_utils.RespondError(w, rest_errors.NewBadRequestError("invalid request body"))
+		return
+	}
+	defer r.Body.Close()
+
+	// Unmarshal body to EsQuery struct
+	var query queries.EsQuery
+	if err := json.Unmarshal(requestBody, &query); err != nil {
+		apiErr := rest_errors.NewBadRequestError("invalid json body @@002")
+		http_utils.RespondError(w, apiErr)
+		return
+	}
+
+	vars := mux.Vars(r)
+	itemId := strings.TrimSpace(vars["id"])
+
+	id, updateErr := services.ItemsService.UpdateV2(itemId, query)
+	if updateErr != nil {
+		http_utils.RespondError(w, updateErr)
+		return
+	}
+	message := "Item successfuly updated, id " + *id
+	http_utils.RespondJson(w, http.StatusCreated, message)
+}
+
 func (c *itemsController) Delete(w http.ResponseWriter, r *http.Request) {
+	// TODO:- Authenticate; same as at create
 	vars := mux.Vars(r)
 	itemId := strings.TrimSpace(vars["id"])
 	id, err := services.ItemsService.Delete(itemId)

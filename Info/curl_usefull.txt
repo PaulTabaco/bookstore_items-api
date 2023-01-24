@@ -21,13 +21,17 @@ http://localhost:8000/items/search
 
 // === Update item
 curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
--d '{"title": "this is the updated title", "description": {"plain_text": "new text description"}, "status": "pending", "available_quantity": 99}' \
-http://localhost:8000/items/update/eeee
-
-
-curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
 -d '{"script": {"source": "ctx._source.title = params.title", "lang": "painless", "params": {"title" : "new text"}}}' \
 http://localhost:8000/items/update/uc92v4UBEleJcw1Y3CKg
+
+// === Update item V2 with EsQuery struct
+curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"equals": [{"field": "title", "value": "NEW TEXT %%%%%%%%%%%%%%"}, {"field": "available_quantity", "value": 10}]}' \
+http://localhost:8000/items/update/v2/uc92v4UBEleJcw1Y3CKg
+
+curl -k -v -X PATCH -H 'Content-type: application/json' -H 'Accept: application/json' \
+-d '{"equals": [{"field": "description.['plain_text']", "value": "NEW PLANE TEXT ((((()))))"}, {"field": "available_quantity", "value": 10}]}' \
+http://localhost:8000/items/update/v2/uc92v4UBEleJcw1Y3CKg
 
 
 {
